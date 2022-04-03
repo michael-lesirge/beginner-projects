@@ -6,54 +6,70 @@ def add_zero(s):
         return '0' + s
     return s
 
-class Bill:
-    __slots__ = "amount", "amount_str"
 
-    def __init__(self, amount):
+class Bill:
+    currency_type = "bill"
+
+    def __init__(self, amount: int):
         self.amount = amount
         self.amount_str = str(amount)
         self.amount_str = self.amount_str[:-2] + '.' + self.amount_str[-2:]
-        self.amount_str = add_zero(self.amount)
+        self.amount_str = add_zero(self.amount_str)
+        self.amount_float = float(self.amount_str)
 
     def __repr__(self):
         return f"Bill({self.amount})"
 
     def __float__(self):
-        return float(self.amount_str)
+        return self.amount_float
 
     def __int__(self):
         return self.amount
 
     def __str__(self):
-        return f"${self.amount_str}"
+        return f"{CURRENCY}{self.amount_str} {self.currency_type}"
 
 
-def make_change(total_amount, *, mode=None, val_type=None):
+class Coin(Bill):
+    currency_type = "coin"
+
+    def __init__(self, amount: int):
+        super(Coin, self).__init__(amount)
+        # ex: Nickle, Dime
+        # self.name = name
+
+    # def __str__(self):
+    #     return self.name
+
+
+CURRENCY = '$'
+AMOUNTS = iter((
+    Bill(10000), Bill(5000), Bill(2000), Bill(1000), Bill(500), Bill(100),
+    Coin(25), Coin(10), Coin(5), Coin(1),
+))
+
+
+def make_change(total_amount, *, mode=None, value_type=None, amounts=AMOUNTS):
     """
     mode must be list or dict
     val_type must be int, str or float
     """
     if mode is None:
         mode = list
-    if val_type is None:
-        val_type = int
-
-    amounts = iter((
-        Bill(10000), Bill(5000), Bill(2000), Bill(1000), Bill(500), Bill(100),
-        Bill(25), Bill(10), Bill(5), Bill(1),
-    ))
+    if value_type is None:
+        value_type = int
 
     if mode == dict:
         change = {}
 
         def add_change(val):
-            change[val_type(val)] = change.get(val_type(val), 0) + 1
+            change[value_type(val)] = change.get(value_type(val), 0) + 1
     elif mode == list:
         change = []
 
         # mode == int or mode is None
         def add_change(val):
-            change.append(val_type(val))
+            change.append(value_type(val))
     else:
         raise TypeError("mode must be list or dict")
 
@@ -68,11 +84,13 @@ def make_change(total_amount, *, mode=None, val_type=None):
 
     return change
 
+
 def escape(s: str):
     """
     check if s is a leave character
     """
     return s in ["e", "ex", "exit"]
+
 
 def to_int(s: str):
     """
@@ -81,21 +99,47 @@ def to_int(s: str):
     return int(float(add_zero(s)) * 100)
 
 
+def run_test():
+    print("enter input as number of cents int ex: $10.00 = 1000")
+
+    output_type = list  # list or dict
+    val_type = str  # int, float or str
+
+    amount = int(input("Enter a amount (in cents): "))
+
+    final = make_change(amount, mode=output_type, value_type=val_type)
+    print(final)
+
 
 def main():
     print("Enter 'e' or 'exit' to exit")
-    output_type, value_type = (list, str)
+
+    output_type = list  # list, dict
+    val_type = str  # int (fixed point), float, str
+
     running = True
     while running:
-        owed = input("How much is owed (as float): ")
+        owed = input("How much is owed (as float): " + CURRENCY)
         if escape(owed):
             break
-        tendered = input("How much was given")
+        tendered = input("How much was given: " + CURRENCY)
         if escape(tendered):
             break
 
         difference = to_int(tendered) - to_int(owed)
-        final = 
+        if difference == 0:
+            print("They have payed the exact amount")
+        elif difference < 0:
+            print(f"They still owe {CURRENCY}{difference}")
+        else:
+            final = make_change(difference, mode=output_type, value_type=val_type)
+            print(final)
+        print()
+
 
 if __name__ == '__main__':
-    main()
+    test_mode = False
+    if test_mode:
+        run_test()
+    else:
+        main()
