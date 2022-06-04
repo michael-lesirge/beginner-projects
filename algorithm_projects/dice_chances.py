@@ -1,21 +1,21 @@
-def reduce(numerator: int, denominator: int, as_str: bool = True):
+import numpy as np
+"""
+super inefficient but its more to learn numpy 
+"""
+
+def reduce(numerator: int, denominator: int):
     """Reduces fractions. n is the numerator and d the denominator."""
 
     def gcd(n: int, d: int):
-        while d != 0:
-            t = d
-            d = n % d
-            n = t
+        while d:
+            n, d = d, n % d
         return n
 
     greatest = gcd(numerator, denominator)
-    numerator /= greatest
-    denominator /= greatest
-    return int(numerator), int(denominator)
+    return (numerator//greatest, denominator//greatest)
 
 
 def dice_chances(dice_sides, num_of_dice, flat=False, as_list=False):
-    import numpy as np
     if num_of_dice <= 0 or dice_sides <= 0:
         dice_nums_total = np.array([], dtype=np.int32)
 
@@ -39,7 +39,6 @@ def dice_chances(dice_sides, num_of_dice, flat=False, as_list=False):
 
 
 def main():
-    import numpy as np
     dice_sides = int(input("How many sides does the dice have: ").removeprefix("d").strip())
     num_of_dice = int(input("How many dice do you want: "))
 
