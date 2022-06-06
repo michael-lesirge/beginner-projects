@@ -15,14 +15,12 @@ class Currency:
         return self.amount
 
     def __str__(self):
-        return "${:.2f}".format(self.amount/100)
-
+        return "${:.2f}".format(float(self))
 
 AMOUNTS = iter((
     Currency(10000), Currency(5000), Currency(2000), Currency(1000), Currency(500), Currency(100),
     Currency(25), Currency(10), Currency(5), Currency(1),
 ))
-
 
 def make_change(total_amount, *, mode=None, value_type=None, amounts=AMOUNTS):
     """
@@ -59,11 +57,13 @@ def make_change(total_amount, *, mode=None, value_type=None, amounts=AMOUNTS):
 def main():
     output_type = dict  # list, dict
     val_type = str  # int, str, float
+    
+    # owed = input("How much is owed: $")
+    # tendered = input("How much was given: $")
+    # difference = (float(tendered)*100) - (float(owed)*100)
 
-    owed = input("How much is owed: $")
-    tendered = input("How much was given: $")
+    difference = float(input("what is the difference: $"))*100
 
-    difference = (float(tendered)*100) - (float(owed)*100)
     if difference == 0:
         print("They have payed the exact amount")
     elif difference < 0:
