@@ -1,11 +1,10 @@
 from linked_list import Node
-from typing import Iterable, Optional
 
 
 class LinkedList:
     __slots__ = ["head", "tail", "len"]
 
-    def __init__(self, iterable: Optional[Iterable] = None) -> None:
+    def __init__(self, iterable=None) -> None:
         self.head = self.tail = self.len = None
         self.clear()
         if iterable:
@@ -30,7 +29,7 @@ class LinkedList:
         self.head = Node(_object, self.head)
         self.len += 1
 
-    def extend(self, iterable: Iterable, /) -> None:
+    def extend(self, iterable, /) -> None:
         """
         extend LinkedList by appending elem from iterable.
         """
@@ -81,11 +80,10 @@ class LinkedList:
     def index(self, value, /) -> int:
         """
         Return first index of value.
-
         Raises ValueError if the value is not present.
         """
         for index, item in enumerate(self):
-            if value == item:
+            if (value == item):
                 return index
         raise ValueError(f"{value} is not in LinkedList")
 
@@ -102,12 +100,11 @@ class LinkedList:
             self.append(_object)
         else:
             current = self.head
-            previous = None
             for _ in range(index):
-                previous = current
+                prev = current
                 current = current.next
             new = Node(_object, current)
-            previous.next = new
+            prev.next = new
             self.len += 1
 
     def is_empty(self) -> bool:
@@ -116,7 +113,6 @@ class LinkedList:
     def pop(self, index=-1, /):
         """
         Remove and return item at index (default last).
-
         Raises IndexError if list is empty or index is out of range.
         """
         if index is None:
@@ -131,7 +127,6 @@ class LinkedList:
             self.head = self.head.next
         else:
             current = self.head
-            previous = None
             for _ in range(index):
                 previous = current
                 current = current.next
@@ -158,7 +153,7 @@ class LinkedList:
         self.len -= 1
 
     def reverse(self) -> None:
-        reversed_self = reversed(self)
+        reversed_self = self.__reversed__()
         self.head, self.tail = reversed_self.head, reversed_self.tail
 
     # def sort(self, *, key=None, reverse: bool =False) -> None:
@@ -296,7 +291,7 @@ class LinkedList:
 
         self.len -= 1
 
-    def __reversed__(self) -> "LinkedList":
+    def __reversed__(self):
         new = LinkedList()
         for data in self:
             new.prepend(data)
@@ -308,7 +303,7 @@ class LinkedList:
             yield current.data
             current = current.next
 
-    def __len__(self) -> int:
+    def __len__(self):
         return self.len
 
     def __repr__(self) -> str:
