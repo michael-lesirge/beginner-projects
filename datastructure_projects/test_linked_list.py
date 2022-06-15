@@ -1,7 +1,10 @@
-from linked_list import Node
 from linked_list import LinkedList as LList
 
 import unittest
+
+if __name__ == "__main__":
+    unittest.main()
+
 
 class TestLinkedList(unittest.TestCase):
     def test_init(self):
@@ -34,7 +37,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(str(LList([2.5])), "[2.5]")
         self.assertEqual(str(LList([4.3, 5.8, 10.2, 1.2])), "[4.3, 5.8, 10.2, 1.2]")
 
-    def test_defulats(self):
+    def test_builtins(self):
         ll = LList([0, -6, 2, 7, -3, 5])
         self.assertEqual(min(ll), -6)
         self.assertEqual(max(ll), 7)
@@ -43,27 +46,27 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(len(ll), 6)
 
     def test_equal(self):
-        self.assertTrue(LList([4,2,8])==LList([4,2,8]))
-        self.assertTrue(LList([1, 8, 3, 6])==LList([1, 8, 3, 6]))
-        self.assertTrue(LList([])==LList([]))
+        self.assertTrue(LList([4, 2, 8]) == LList([4, 2, 8]))
+        self.assertTrue(LList([1, 8, 3, 6]) == LList([1, 8, 3, 6]))
+        self.assertTrue(LList([]) == LList([]))
 
-        self.assertFalse(LList([1, 6, 2])==LList([1, 6, 2, 4]))
-        self.assertFalse(LList([5, 2, 8])==LList([1, 7, 7]))
-        self.assertFalse(LList(["abcd", "efg"])==LList(["abcd", "efX"]))
+        self.assertFalse(LList([1, 6, 2]) == LList([1, 6, 2, 4]))
+        self.assertFalse(LList([5, 2, 8]) == LList([1, 7, 7]))
+        self.assertFalse(LList(["abcd", "efg"]) == LList(["abcd", "efX"]))
 
         self.assertFalse(LList([1]) == 0)
 
     def test_not_equal(self):
-        self.assertTrue(LList([1, 6, 2])!=LList([1, 6, 2, 4]))
-        self.assertTrue(LList([5, 2, 8])!=LList([1, 7, 7]))
-        self.assertTrue(LList(["abcd", "efg"])!=LList(["abcd", "efX"]))
+        self.assertTrue(LList([1, 6, 2]) != LList([1, 6, 2, 4]))
+        self.assertTrue(LList([5, 2, 8]) != LList([1, 7, 7]))
+        self.assertTrue(LList(["abcd", "efg"]) != LList(["abcd", "efX"]))
 
-        self.assertFalse(LList([4,2,8])!=LList([4,2,8]))
-        self.assertFalse(LList([1, 8, 3, 6])!=LList([1, 8, 3, 6]))
-        self.assertFalse(LList([])!=LList([]))
+        self.assertFalse(LList([4, 2, 8]) != LList([4, 2, 8]))
+        self.assertFalse(LList([1, 8, 3, 6]) != LList([1, 8, 3, 6]))
+        self.assertFalse(LList([]) != LList([]))
 
         self.assertTrue(LList([1]) != 0)
-    
+
     def test_iter(self):
         pl = [6, 2, 5, 1, 12, 6, 456]
         ll = LList(pl)
@@ -78,7 +81,7 @@ class TestLinkedList(unittest.TestCase):
 
         self.assertFalse(-5 in ll)
         self.assertFalse(13 in ll)
-    
+
     def test_bool(self):
         self.assertTrue(bool(LList([4])))
         self.assertTrue(bool(LList([7, 2, 3])))
@@ -105,7 +108,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(ll, LList([4, 7, 2]))
         self.assertEqual(list(ll), [4, 7, 2])
         self.assertEqual(len(ll), 3)
-    
+
     def test_prepend(self):
         ll = LList([5, 3])
         self.assertEqual(list(ll), [5, 3])
@@ -128,8 +131,8 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(ll, LList([0]))
         self.assertEqual(list(ll), [0])
         self.assertEqual(len(ll), 1)
-    
-    def test_exstend(self):
+
+    def test_extend(self):
         ll = LList([1, 2, 3])
         ll.extend([4, 5])
         self.assertEqual(ll, LList([1, 2, 3, 4, 5]))
@@ -168,13 +171,13 @@ class TestLinkedList(unittest.TestCase):
         # self.assertEqual(len(ll), 3)
         ll.clear()
         self.assertEqual(len(ll), 0)
-    
+
     def test_clear(self):
         ll = LList([4, 6, 2])
         ll.clear()
         self.assertEqual(ll, LList())
         self.assertEqual(len(ll), 0)
-    
+
     def test_copy(self):
         ll1 = LList([1, 3])
         ll2 = ll1.copy()
@@ -189,7 +192,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(ll1, ll2)
         ll1.append(3)
         self.assertNotEqual(ll1, ll2)
-    
+
     def test_pop(self):
         ll = LList([1, 2, 3, 5, 6, 7, 8])
         self.assertEqual(ll.pop(), 8)
@@ -207,7 +210,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(ll.pop(-2), 6)
         self.assertEqual(ll, LList([2, 3, 7]))
         self.assertEqual(len(ll), 3)
-        
+
         self.assertEqual(ll.pop(), 7)
         self.assertEqual(ll, LList([2, 3]))
         self.assertEqual(len(ll), 2)
@@ -219,7 +222,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(ll.pop(), 2)
         self.assertEqual(ll, LList([]))
         self.assertEqual(len(ll), 0)
-        
+
         ll = LList([1])
 
         with self.assertRaises(IndexError) as exc:
@@ -251,14 +254,14 @@ class TestLinkedList(unittest.TestCase):
         with self.assertRaises(ValueError) as exc:
             ll.index(100)
         self.assertEqual(str(exc.exception), "100 is not in LinkedList")
-    
+
     def test_count(self):
         ll = LList([1, 3, 5, 5, 6, 7, 8, 8, 8, 9])
         self.assertEqual(ll.count(1), 1)
         self.assertEqual(ll.count(5), 2)
         self.assertEqual(ll.count(8), 3)
         self.assertEqual(ll.count(10), 0)
-    
+
     def test_remove(self):
         ll = LList([1, 2, 3, 4])
         ll.remove(4)
@@ -269,7 +272,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(ll, LList([3]))
         ll.remove(3)
         self.assertEqual(ll, LList([]))
-    
+
     def test_getitem(self):
         ll = LList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
         self.assertEqual(ll[0], 0)
@@ -278,7 +281,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(ll[9], 9)
         self.assertEqual(ll[-1], 9)
         self.assertEqual(ll[-4], 6)
-    
+
     def test_getitem_slice(self):
         ll = LList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
         self.assertEqual(ll[:], LList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]))
@@ -290,7 +293,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(ll[1::2], LList([1, 3, 5, 7, 9]))
         self.assertEqual(ll[3::3], LList([3, 6, 9]))
         self.assertEqual(ll[2::4], LList([2, 6]))
-    
+
     def test_setitem(self):
         ll = LList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
         ll[9] = 0
@@ -310,43 +313,43 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(str(exc.exception), "LinkedList index out of range")
 
     def test_delitem(self):
-            ll = LList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-            del ll[9]
-            self.assertEqual(ll, LList([0, 1, 2, 3, 4, 5, 6, 7, 8]))
-            del ll[0]
-            self.assertEqual(ll, LList([1, 2, 3, 4, 5, 6, 7, 8]))
-            del ll[4]
-            self.assertEqual(ll, LList([1, 2, 3, 4, 6, 7, 8]))
-            del ll[2]
-            self.assertEqual(ll, LList([1, 2, 4, 6, 7, 8]))
-            del ll[-1]
-            self.assertEqual(ll, LList([1, 2, 4, 6, 7]))
-            del ll[-3]
-            self.assertEqual(ll, LList([1, 2, 6, 7]))
+        ll = LList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        del ll[9]
+        self.assertEqual(ll, LList([0, 1, 2, 3, 4, 5, 6, 7, 8]))
+        del ll[0]
+        self.assertEqual(ll, LList([1, 2, 3, 4, 5, 6, 7, 8]))
+        del ll[4]
+        self.assertEqual(ll, LList([1, 2, 3, 4, 6, 7, 8]))
+        del ll[2]
+        self.assertEqual(ll, LList([1, 2, 4, 6, 7, 8]))
+        del ll[-1]
+        self.assertEqual(ll, LList([1, 2, 4, 6, 7]))
+        del ll[-3]
+        self.assertEqual(ll, LList([1, 2, 6, 7]))
 
-            self.assertEqual(len(ll), 4)
+        self.assertEqual(len(ll), 4)
 
-            with self.assertRaises(IndexError) as exc:
-                del ll[100]
-            self.assertEqual(str(exc.exception), "LinkedList index out of range")
-            with self.assertRaises(IndexError) as exc:
-                del ll[-100]
-            self.assertEqual(str(exc.exception), "LinkedList index out of range")
+        with self.assertRaises(IndexError) as exc:
+            del ll[100]
+        self.assertEqual(str(exc.exception), "LinkedList index out of range")
+        with self.assertRaises(IndexError) as exc:
+            del ll[-100]
+        self.assertEqual(str(exc.exception), "LinkedList index out of range")
 
     def test_add(self):
-        self.assertEqual(LList([])+LList([]), LList([]))
-        self.assertEqual(LList([1])+LList([5]), LList([1, 5]))
-        self.assertEqual(LList([1, 2, 3])+LList([4, 5, 6]), LList([1, 2, 3, 4, 5, 6]))
-        
+        self.assertEqual(LList([]) + LList([]), LList([]))
+        self.assertEqual(LList([1]) + LList([5]), LList([1, 5]))
+        self.assertEqual(LList([1, 2, 3]) + LList([4, 5, 6]), LList([1, 2, 3, 4, 5, 6]))
+
         ll = LList([1, 2, 3])
         ll += LList([4, 5, 6])
         self.assertEqual(ll, LList([1, 2, 3, 4, 5, 6]))
 
     def test_mul(self):
         ll = LList([1, 2, 3])
-        self.assertEqual(ll*2, LList([1, 2, 3, 1, 2, 3]))
+        self.assertEqual(ll * 2, LList([1, 2, 3, 1, 2, 3]))
         ll *= 10
-        self.assertEqual(ll, LList([1, 2, 3]*10))
+        self.assertEqual(ll, LList([1, 2, 3] * 10))
 
     def test_reverse(self):
         ll = LList([1, 2, 3, 4])
@@ -354,6 +357,3 @@ class TestLinkedList(unittest.TestCase):
 
         ll.reverse()
         self.assertEqual(ll, LList([4, 3, 2, 1]))
-
-if __name__ == "__main__":
-    unittest.main()
