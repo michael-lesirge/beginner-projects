@@ -16,14 +16,14 @@ def main():
 
     players = []
     if bool_input("Do you want a custom players"):
-        for i in range(1, int_input("Enter the number of players: ")+1):
+        for i in range(1, int_input("Enter the number of players: ") + 1):
             print()
             print(f"Player {i}")
             new_player = create_player()
             players.append(new_player)
     else:
-        players.append(Player("X", color="red"))
-        # players.append(Player("O", color="blue"))
+        players.append(Player("X", "red"))
+        players.append(Player("O", "blue"))
     print()
 
     playing = True
@@ -78,7 +78,7 @@ class Board:
     def _empty_location(self, loc):
         return self._board[loc] == str(loc)
 
-    def place(self, loc, val):
+    def place(self, loc: int, val):
         if not self._in_board(loc):
             raise ValueError(f"location must be from 1 to {self.size}")
         if not self._empty_location(loc):
@@ -154,8 +154,10 @@ class Player:
         while True:
             try:
                 print()
-                loc = int_input("Enter where you want to go: ")
-                Player.board.place(loc, self)
+                loc = input("Enter where you want to go: ")
+                if not loc.isnumeric():
+                    raise ValueError("Location must be a number")
+                Player.board.place(int(loc), self)
                 return
             except ValueError as exs:
                 print_invalid(exs)
@@ -169,8 +171,12 @@ class Player:
         return self.char
 
 
-def add_buffer(val, amount):
-    return (" " * (amount - (1 if isinstance(val, Player) else len(val)))) + str(val)
+def add_buffer(val, amount, *, buffer=" "):
+    amount -= (1 if isinstance(val, Player) else len(val))
+
+    side_amount, extra = divmod(amount, 2)
+
+    return (buffer * (side_amount+extra)) + str(val) + (buffer * side_amount)
 
 
 def print_invalid(exs):
