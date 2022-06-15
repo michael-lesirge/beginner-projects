@@ -23,7 +23,7 @@ def main():
             players.append(new_player)
     else:
         players.append(Player("X", "red"))
-        players.append(Player("O", "blue"))
+        # players.append(Player("O", "blue"))
     print()
 
     playing = True
@@ -86,19 +86,17 @@ class Board:
         self._board[loc] = val
 
     def detect_is_winner(self, player):
-        win_set = {player}
-
         for i in range(1, self.size + 1, self.width):
-            if {self._board[j] for j in range(i, i + self.width)} == win_set:
+            if all(((self._board[j] == player) for j in range(i, i + self.width))):
                 return True
 
         for i in range(1, self.width + 1):
-            if {self._board[j] for j in range(i, self.size + 1, self.width)} == win_set:
+            if all(((self._board[j] == player) for j in range(i, self.size + 1, self.width))):
                 return True
 
         if self.width == self.height:
-            if {self._board[i] for i in range(1, self.size + 1, self.width + 1)} == win_set or \
-                    {self._board[i] for i in range(self.width, self.size, self.width - 1)} == win_set:
+            if all(((self._board[i] == player) for i in range(1, self.size + 1, self.width + 1))) or \
+                    all(((self._board[i] == player) for i in range(self.width, self.size, self.width - 1))):
                 return True
         return False
 
@@ -176,7 +174,7 @@ def add_buffer(val, amount, *, buffer=" "):
 
     side_amount, extra = divmod(amount, 2)
 
-    return (buffer * (side_amount+extra)) + str(val) + (buffer * side_amount)
+    return (buffer * (side_amount + extra)) + str(val) + (buffer * side_amount)
 
 
 def print_invalid(exs):
