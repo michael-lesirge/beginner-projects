@@ -1,19 +1,21 @@
 from linked_list import Node
+from typing import Iterable
 
 
 class LinkedList:
     __slots__ = ["head", "tail", "len"]
-    def __init__(self, iterable=None) -> None:
+
+    def __init__(self, iterable: Iterable = None) -> None:
         self.head = self.tail = self.len = None
         self.clear()
         if iterable:
             self.extend(iterable)
-    
-    def append(self, object, /) -> None:
+
+    def append(self, _object, /) -> None:
         """
         Append object to end of LinkedList.
         """
-        new = Node(object)
+        new = Node(_object)
         if self.is_empty():
             self.head = new
         else:
@@ -21,16 +23,16 @@ class LinkedList:
         self.tail = new
         self.len += 1
 
-    def prepend(self, object, /) -> None:
+    def prepend(self, _object, /) -> None:
         """
         Prepend object to front of LinkedList.
         """
-        self.head = Node(object, self.head)
+        self.head = Node(_object, self.head)
         self.len += 1
-        
-    def extend(self, iterable, /) -> None:
+
+    def extend(self, iterable: Iterable, /) -> None:
         """
-        exstend LinkedList by appending elem from iterable.
+        extend LinkedList by appending elem from iterable.
         """
         for elem in iterable:
             self.append(elem)
@@ -47,7 +49,7 @@ class LinkedList:
         copy = LinkedList()
         copy.extend(self)
         return copy
-    
+
     def count(self, value, /) -> int:
         """
         Return number of occurrences of value.
@@ -56,7 +58,7 @@ class LinkedList:
         for item in self:
             count += (value == item)
         return count
-    
+
     def display(self) -> str:
         nodes = []
         current = self.head
@@ -72,7 +74,7 @@ class LinkedList:
             current = current.next
 
         return " -> ".join(nodes)
-    
+
     def display_nodes(self) -> str:
         return repr(self.head)
 
@@ -83,11 +85,11 @@ class LinkedList:
         Raises ValueError if the value is not present.
         """
         for index, item in enumerate(self):
-            if (value == item):
+            if value == item:
                 return index
         raise ValueError(f"{value} is not in LinkedList")
-    
-    def insert(self, index, object, /) -> None:
+
+    def insert(self, index, _object, /) -> None:
         """
         Insert object before index.
         """
@@ -95,16 +97,17 @@ class LinkedList:
             index += len(self)
 
         if index <= 0:
-            self.prepend(object)
+            self.prepend(_object)
         elif index >= len(self):
-            self.append(object)
+            self.append(_object)
         else:
             current = self.head
+            previous = None
             for _ in range(index):
-                prev = current
+                previous = current
                 current = current.next
-            new = Node(object, current)
-            prev.next = new
+            new = Node(_object, current)
+            previous.next = new
             self.len += 1
 
     def is_empty(self) -> bool:
@@ -117,7 +120,7 @@ class LinkedList:
         Raises IndexError if list is empty or index is out of range.
         """
         if index is None:
-            index = len(self)-1
+            index = len(self) - 1
         elif index < 0:
             index += len(self)
         if index < 0 or index >= len(self):
@@ -128,6 +131,7 @@ class LinkedList:
             self.head = self.head.next
         else:
             current = self.head
+            previous = None
             for _ in range(index):
                 previous = current
                 current = current.next
@@ -150,7 +154,7 @@ class LinkedList:
             self.head = self.head.next
         else:
             previous.next = current.next
-            
+
         self.len -= 1
 
     def reverse(self) -> None:
@@ -166,7 +170,7 @@ class LinkedList:
             new.extend(other)
             return new
         raise TypeError(f"can only concatenate LinkedList (not '{type(other).__name__}') to LinkedList")
-    
+
     def __iadd__(self, other):
         if isinstance(other, LinkedList):
             self.extend(other)
@@ -180,7 +184,7 @@ class LinkedList:
                 new.extend(self)
             return new
         raise TypeError(f"can't multiply LinkedList by non-int of type '{type(other).__name__}'")
-    
+
     def __rmul__(self, other: int):
         return self * other
 
@@ -220,7 +224,7 @@ class LinkedList:
             if key < 0 or key >= len(self):
                 raise IndexError("LinkedList index out of range")
 
-            if key == len(self)-1:
+            if key == len(self) - 1:
                 return self.tail.data
 
             current = self.head
@@ -244,10 +248,10 @@ class LinkedList:
                 raise ValueError("slice step cannot be zero")
             elif step < 0:
                 raise ValueError("reverse slice not implemented")
-            
+
             start = max(start, 0)
             stop = min(stop, len(self))
-                
+
             new = LinkedList()
             current = self.head
             for _ in range(start):
@@ -259,23 +263,23 @@ class LinkedList:
                     if current is None:
                         return new
             return new
-            
+
         return NotImplemented
-    
+
     def __setitem__(self, key, data):
         if key < 0:
             key += len(self)
         if key < 0 or key >= len(self):
             raise IndexError("LinkedList index out of range")
 
-        if key == len(self)-1:
+        if key == len(self) - 1:
             self.tail.data = data
-        
+
         current = self.head
         for _ in range(key):
             current = current.next
         current.data = data
-    
+
     def __delitem__(self, key):
         if key < 0:
             key += len(self)
@@ -286,13 +290,13 @@ class LinkedList:
             self.head = self.head.next
         else:
             current = self.head
-            for _ in range(key-1):
+            for _ in range(key - 1):
                 current = current.next
             current.next = current.next.next
-        
+
         self.len -= 1
 
-    def __reversed__(self):
+    def __reversed__(self) -> "LinkedList":
         new = LinkedList()
         for data in self:
             new.prepend(data)
@@ -304,7 +308,7 @@ class LinkedList:
             yield current.data
             current = current.next
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.len
 
     def __repr__(self) -> str:
