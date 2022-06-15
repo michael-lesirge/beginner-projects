@@ -23,7 +23,7 @@ def main():
             players.append(new_player)
     else:
         players.append(Player("X", "red"))
-        # players.append(Player("O", "blue"))
+        players.append(Player("O", "blue"))
     print()
 
     playing = True
