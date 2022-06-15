@@ -1,11 +1,11 @@
 from linked_list import Node
-from typing import Iterable
+from typing import Iterable, Optional
 
 
 class LinkedList:
     __slots__ = ["head", "tail", "len"]
 
-    def __init__(self, iterable: Iterable = None) -> None:
+    def __init__(self, iterable: Optional[Iterable] = None) -> None:
         self.head = self.tail = self.len = None
         self.clear()
         if iterable:
