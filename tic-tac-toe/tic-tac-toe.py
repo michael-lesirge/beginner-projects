@@ -1,18 +1,18 @@
 def main():
     print("Welcome to tic-tac-toe with python!")
     color_mode = bool_input("Does you console support ASCII color codes")
-    print()
-
-    width = height = 3
-    if bool_input("Do you want a custom board"):
-        message = "Enter the {m} of the board: "
-        width, height = int_input(message.format(m="width")), int_input(message.format(m="height"))
-    print()
-
-    board = Board(width, height)
-
-    Player.board = board
     Player.color_mode = color_mode
+    print()
+
+    if bool_input("Do you want a custom board"):
+        message = "Enter the %s of the board: "
+        width, height = int_input(message % "width"), int_input(message % "height")
+        board = Board(width, height)
+    else:
+        board = Board()
+    Player.board = board
+
+    print()
 
     players = []
     if bool_input("Do you want a custom players"):
@@ -24,25 +24,25 @@ def main():
     else:
         players.append(Player("X", "red"))
         players.append(Player("O", "blue"))
+
     print()
 
     playing = True
     while playing:
-        print(f"Round {board.rounds}")
-        board.reset()
-        for i in range(board.size):
-            player = players[i % len(players)]
+        board.new_game()
+        print(f"Round {board.rounds_played}")
+        while board.is_not_full():
+            player = players[board.placed % len(players)]
             print(board)
             print(f"{player}'s turn.")
 
             player.place()
 
-            if board.detect_is_winner(player):
+            if board.is_winner(player):
                 print(board)
                 player.wins += 1
                 print(f"Player {player} wins!")
                 break
-
         else:
             print(board)
             print("It's a tie!")
@@ -59,33 +59,36 @@ def main():
 
 class Board:
     def __init__(self, width=3, height=3):
-        self.width = int(width)
-        self.height = int(height)
-        self.size = (self.width * self.height)
+        self.width: int = width
+        self.height: int = height
+        self.size: int = (self.width * self.height)
 
-        self.rounds = 0
+        self.rounds_played: int = 0
+        self.placed: int
+        self._board: dict
+        self._reset()
 
-        self._board = None
-        self.reset()
+    def new_game(self):
+        self.rounds_played += 1
+        self._reset()
 
-    def reset(self):
-        self.rounds += 1
+    def _reset(self):
+        self.placed = 0
         self._board = {i: str(i) for i in range(1, self.size + 1)}
 
-    def _in_board(self, loc):
-        return 1 <= loc <= self.size
+    def _is_valid_location(self, loc) -> bool:
+        return loc in self._board
 
-    def _empty_location(self, loc):
+    def _is_empty_location(self, loc) -> bool:
         return self._board[loc] == str(loc)
 
-    def place(self, loc: int, val):
-        if not self._in_board(loc):
-            raise ValueError(f"location must be from 1 to {self.size}")
-        if not self._empty_location(loc):
-            raise ValueError("location is already occupied")
-        self._board[loc] = val
+    def is_full(self) -> bool:
+        return self.placed >= self.size
 
-    def detect_is_winner(self, player):
+    def is_not_full(self) -> bool:
+        return self.placed < self.size
+
+    def is_winner(self, player) -> bool:
         for i in range(1, self.size + 1, self.width):
             if all(((self._board[j] == player) for j in range(i, i + self.width))):
                 return True
@@ -100,8 +103,19 @@ class Board:
                 return True
         return False
 
+    def __getitem__(self, item):
+        return self._board[item]
+
     def __setitem__(self, key, value):
         self.place(key, value)
+
+    def place(self, loc: int, val: "Player"):
+        if not self._is_valid_location(loc):
+            raise ValueError(f"location must be from 1 to {self.size}")
+        if not self._is_empty_location(loc):
+            raise ValueError("location is already occupied")
+        self.placed += 1
+        self._board[loc] = val
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self._board})"
@@ -134,7 +148,7 @@ class Player:
         "white": "\u001b[37m",
     }
 
-    def __init__(self, char: str, color=None):
+    def __init__(self, char: str, color: str = None):
         if len(char) != 1:
             raise ValueError("Player character must be one character")
         if not char.isalpha():
@@ -144,7 +158,7 @@ class Player:
         color = color.lower()
         if color not in Player.colors:
             raise ValueError(f"{color} is not an available color")
-        self.color = Player.colors[color]
+        self.color: str = Player.colors[color]
 
         self.wins = 0
 
