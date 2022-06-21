@@ -208,10 +208,11 @@ def bool_input(prompt):
 def int_input(prompt):
     while True:
         try:
-            user_input = input(prompt).strip()
-            return int(user_input)
+            user_input = int(input(prompt).strip())
         except ValueError:
             print_invalid("answer with a number")
+        else:
+            return user_input
 
 
 def create_player():
@@ -221,9 +222,11 @@ def create_player():
             color = None
             if Player.color_mode:
                 color = input("Color: ").strip()
-            return Player(char, color)
+            player = Player(char, color)
         except ValueError as exs:
             print_invalid(exs)
+        else:
+            return player
 
 
 if __name__ == "__main__":
