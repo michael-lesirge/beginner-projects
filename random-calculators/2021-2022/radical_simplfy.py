@@ -2,8 +2,6 @@ print("'ex' to end.\nformat exa: '7(81', '320'\nno spaces.\n'(' = root sign")
 
 all_ps = {i * i for i in range(1, 100)}
 
-# made by michael
-
 def box(n):
     from math import sqrt
     if n in all_ps:
@@ -41,7 +39,6 @@ def format_n(n, times=1):
 
 
 def main():
-    print("Made by Michael\n")
     while True:
         user_input = input("\nEnter radical: ")
         if user_input.lower() in ["ex", "exit"]:
