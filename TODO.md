@@ -28,9 +28,9 @@ C++ (at: Member Initializer Lists in C++ (Constructor Initializer List))
 MIT 6.006 Introduction to Algorithms, Fall 2011 - YouTube  (probably start over)
 https://traversymedia.com/guide
 
-## Future Videos
+### Future Videos
 Build a Django REST API with the Django Rest Framework. Complete Tutorial.
 Build a Social Media App with Django – Python Web Framework Tutorial
 Python API Development - Comprehensive Course for Beginners
-Bookmarks on SteveyMcSteve07 google account
+Bookmarks on old google account
 Java Course. Skip around to important sections.
