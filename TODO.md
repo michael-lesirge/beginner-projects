@@ -3,6 +3,7 @@
 ##### Try one Neet/Leetcode every day.
 
 
+
 ## Programming Projects
 
 ### Completed (but could still do more)
@@ -18,6 +19,7 @@
 - Django Reddit Clone
 - Leetcode solution auto format and upload to github repository 
 - Should you wear sunscreen with HTML/CSS/JS and third party API
+
 
 
 ## Programming Tutorials
